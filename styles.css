@@ -303,6 +303,7 @@ h1 {
 
 .app-footer {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
   margin-top: 25px;
@@ -310,6 +311,30 @@ h1 {
   border-top: 1px solid var(--border);
   color: var(--text-muted);
   font-size: 0.78rem;
+}
+
+.clear-completed {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-muted);
+  background: var(--surface-soft);
+  font: inherit;
+  font-size: 0.77rem;
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease, opacity 160ms ease;
+}
+
+.clear-completed:hover:not(:disabled),
+.clear-completed:focus-visible:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent-dark);
+  background: var(--accent-soft);
+}
+
+.clear-completed:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .saved-note {
