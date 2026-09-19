@@ -14,9 +14,30 @@
   --accent-dark: #be4d3d;
   --accent-soft: #fbe4dd;
   --focus: #2b8c88;
+  --focus-ring: rgba(43, 140, 136, 0.16);
+  --focus-ring-strong: rgba(43, 140, 136, 0.28);
+  --button-text: #fff;
   --shadow: rgba(75, 57, 43, 0.12);
   --radius-card: 22px;
   --radius-control: 11px;
+}
+
+[data-theme="dark"] {
+  --page-bg: #20282a;
+  --page-glow: #344344;
+  --surface: #2b3536;
+  --surface-soft: #253031;
+  --text: #f4f1ea;
+  --text-muted: #b9c3c0;
+  --border: #465252;
+  --accent: #f08468;
+  --accent-dark: #ff9a7f;
+  --accent-soft: #583b35;
+  --focus: #6fc1b8;
+  --focus-ring: rgba(111, 193, 184, 0.2);
+  --focus-ring-strong: rgba(111, 193, 184, 0.36);
+  --button-text: #20282a;
+  --shadow: rgba(0, 0, 0, 0.28);
 }
 
 body {
@@ -38,7 +59,7 @@ body {
 
 .todo-card {
   padding: 34px;
-  border: 1px solid rgba(228, 221, 211, 0.9);
+  border: 1px solid var(--border);
   border-radius: var(--radius-card);
   background: var(--surface);
   box-shadow: 0 18px 48px var(--shadow);
@@ -49,12 +70,40 @@ body {
   margin-bottom: 28px;
 }
 
+.header-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .eyebrow {
   margin: 0 0 10px;
   color: var(--accent);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.16em;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-muted);
+  background: var(--surface-soft);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  border-color: var(--focus);
+  color: var(--text);
 }
 
 h1,
@@ -99,12 +148,12 @@ h1 {
 }
 
 .todo-input::placeholder {
-  color: #a2aaa9;
+  color: var(--text-muted);
 }
 
 .todo-input:focus {
   border-color: var(--focus);
-  outline: 3px solid rgba(43, 140, 136, 0.16);
+  outline: 3px solid var(--focus-ring);
   background: var(--surface);
 }
 
@@ -112,7 +161,7 @@ h1 {
   padding: 0 17px;
   border: 0;
   border-radius: var(--radius-control);
-  color: #fff;
+  color: var(--button-text);
   background: var(--accent);
   font: inherit;
   font-size: 0.9rem;
@@ -128,10 +177,37 @@ h1 {
 }
 
 .add-button:focus-visible,
+.theme-toggle:focus-visible,
+.filter-button:focus-visible,
 .btn-delete:focus-visible,
 .todo-item input:focus-visible {
-  outline: 3px solid rgba(43, 140, 136, 0.28);
+  outline: 3px solid var(--focus-ring-strong);
   outline-offset: 2px;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin: -12px 0 24px;
+}
+
+.filter-button {
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-muted);
+  background: transparent;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease;
+}
+
+.filter-button:hover,
+.filter-button.is-active {
+  border-color: var(--accent);
+  color: var(--accent-dark);
+  background: var(--accent-soft);
 }
 
 .list-heading {
@@ -237,7 +313,7 @@ h1 {
 }
 
 .saved-note {
-  color: #a2aaa9;
+  color: var(--text-muted);
 }
 
 .sr-only {
