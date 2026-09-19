@@ -6,6 +6,7 @@ const input = document.querySelector('#todo-input');
 const list = document.querySelector('#todo-list');
 const emptyState = document.querySelector('#empty-state');
 const remainingCount = document.querySelector('#remaining-count');
+const clearCompletedButton = document.querySelector('#clear-completed');
 const themeToggle = document.querySelector('#theme-toggle');
 const themeToggleIcon = document.querySelector('#theme-toggle-icon');
 const themeToggleLabel = document.querySelector('#theme-toggle-label');
@@ -114,7 +115,17 @@ function render() {
   };
   emptyState.textContent = emptyMessages[currentFilter];
   emptyState.hidden = getVisibleTodos().length !== 0;
-  remainingCount.textContent = `未完成:${todos.filter((todo) => !todo.completed).length} 項`;
+
+  const remainingTodoCount = todos.filter((todo) => !todo.completed).length;
+  const completedTodoCount = todos.filter((todo) => todo.completed).length;
+
+  remainingCount.textContent = `未完成:${remainingTodoCount} 項`;
+
+  if (clearCompletedButton) {
+    clearCompletedButton.hidden = completedTodoCount === 0;
+    clearCompletedButton.disabled = completedTodoCount === 0;
+    clearCompletedButton.setAttribute('aria-label', `清除 ${completedTodoCount} 個已完成待辦事項`);
+  }
 }
 
 // 產生單一待辦使用的識別碼。
@@ -142,6 +153,24 @@ function toggleTodo(id) {
 
 function deleteTodo(id) {
   todos = todos.filter((todo) => todo.id !== id);
+  saveTodos();
+  render();
+}
+
+function clearCompletedTodos() {
+  const completedCount = todos.filter((todo) => todo.completed).length;
+
+  if (completedCount === 0) {
+    return;
+  }
+
+  const confirmed = window.confirm(`確定要刪除 ${completedCount} 個已完成項目嗎？`);
+
+  if (!confirmed) {
+    return;
+  }
+
+  todos = todos.filter((todo) => !todo.completed);
   saveTodos();
   render();
 }
@@ -174,6 +203,10 @@ list.addEventListener('click', (event) => {
     deleteTodo(item.dataset.id);
   }
 });
+
+if (clearCompletedButton) {
+  clearCompletedButton.addEventListener('click', clearCompletedTodos);
+}
 
 themeToggle.addEventListener('click', () => {
   const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
